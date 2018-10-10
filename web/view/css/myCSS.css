@@ -1,0 +1,47 @@
+/*Custom styles for this template*/
+body {
+	padding-top: 5rem;
+	font-family: 'Jua', monospace;
+}
+
+.starter-template {
+	padding: 1.5rem 1.5rem;
+}
+
+@media (min-width: 992px) {
+	body {
+		padding-top: 56px;
+	}
+}
+
+/* TOP Button */
+#myBtn {
+	display: none;
+	position: fixed;
+	bottom: 20px;
+	right: 30px;
+	z-index: 99;
+	font-size: 18px;
+	border: none;
+	outline: none;
+	background-color: red;
+	color: white;
+	cursor: pointer;
+	padding: 15px;
+	border-radius: 4px;
+}
+
+#myBtn:hover {
+	background-color: #555;
+}
+
+/* login Form */
+#window-form-body .window-form {
+	margin-top: 25%;
+	margin-bottom: 15px;
+	background-color: #fff;
+	border: 1px solid #eee;
+	border-radius: 4px;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+	padding: 30px;
+}

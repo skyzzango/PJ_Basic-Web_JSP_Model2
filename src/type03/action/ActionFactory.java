@@ -1,6 +1,7 @@
 package type03.action;
 
 import type03.controller.board.BoardListAction;
+import type03.controller.board.BoardViewAction;
 import type03.controller.board.BoardWriteAction;
 
 public class ActionFactory {
@@ -39,8 +40,8 @@ public class ActionFactory {
 //			case "member_updateProc":
 //				return new MemberUpdateProcAction();
 //
-//			case "board_view":
-//				return new BoardViewAction();
+			case "board_view":
+				return new BoardViewAction();
 //
 //			case "board_delete":
 //				return new BoardDeleteAction();

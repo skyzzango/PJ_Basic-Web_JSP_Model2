@@ -16,11 +16,11 @@ public class DBManager {
 							.lookup("java:comp/env/jdbc/mySql");
 					conn = dataSource.getConnection();
 					break;
-				case "oracle":
-					dataSource = (DataSource) new InitialContext()
-							.lookup("java:comp/env/jdbc/myOracle");
-					conn = dataSource.getConnection();
-					break;
+//				case "oracle":
+//					dataSource = (DataSource) new InitialContext()
+//							.lookup("java:comp/env/jdbc/myOracle");
+//					conn = dataSource.getConnection();
+//					break;
 			}
 		} catch (Exception e) {
 			System.err.println("Exception: Database Connection Something Problem!!");

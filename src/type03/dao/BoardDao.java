@@ -2,6 +2,7 @@ package type03.dao;
 
 import type03.dto.BoardDto;
 import type03.util.DBManager;
+import type03.util.MyUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class BoardDao {
 		return pstmt.executeQuery();
 	}
 
-	public BoardDto createBoard(ResultSet rs) throws SQLException {
+	private BoardDto createBoard(ResultSet rs) throws SQLException {
 		BoardDto board = new BoardDto();
 		board.setNum(rs.getInt("num"));
 		board.setId(rs.getString("id"));
@@ -41,41 +42,145 @@ public class BoardDao {
 		return board;
 	}
 
-	// select_paging
-	public List<BoardDto> select_paging(int pageNum) {
+	public List<BoardDto> getAllBoard() {
 		List<BoardDto> list = new ArrayList<>();
-		String sql = "select * from BOARD order by NUM desc limit ?, 3";
+		String sql = "select * from board order by num desc";
 		try (
-				Connection conn = DBManager.getConnection("oracle");
-				ResultSet rs = setResultSet(conn.prepareStatement(sql), pageNum)
-		) {
-			while (rs.next()) {
-				list.add(createBoard(rs));
-			}
-		} catch (SQLException e) {
-			System.err.println("Exception: BoardDao Function(select_paging) Something Problem!!");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	// hotBoard
-	public List<BoardDto> hotBoard() {
-		List<BoardDto> list = new ArrayList<>();
-		String sql = "SELECT num, title, readcount FROM board ORDER BY readcount DESC limit 3";
-		try (
-				Connection conn = DBManager.getConnection("oracle");
+				Connection conn = DBManager.getConnection("mysql");
 				ResultSet rs = conn.prepareStatement(sql).executeQuery()
 		) {
 			while (rs.next()) {
 				list.add(createBoard(rs));
 			}
 		} catch (SQLException e) {
-			System.err.println("Exception: BoardDao Function(select_paging) Something Problem!!");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			MyUtil.showException(getClass().getName(), "search", e);
 		}
 		return list;
 	}
+
+	public List<BoardDto> getPageBoard(int pageNum) {
+		List<BoardDto> list = new ArrayList<>();
+		String sql = "select * from board order by num desc limit ?, 3";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				ResultSet rs = setResultSet(conn.prepareStatement(sql), pageNum)
+		) {
+			while (rs.next()) {
+				list.add(createBoard(rs));
+			}
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "getPageBoard", e);
+		}
+		return list;
+	}
+
+	public List<BoardDto> getHotBoard() {
+		List<BoardDto> list = new ArrayList<>();
+		String sql = "select * from board order by readcount desc limit 3";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				ResultSet rs = conn.prepareStatement(sql).executeQuery()
+		) {
+			while (rs.next()) {
+				list.add(createBoard(rs));
+			}
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "getHotBoard", e);
+		}
+		return list;
+	}
+
+	public int insertBoard(BoardDto board) {
+		String sql = "insert into board (title, content, writedate, id) value (?, ?, now(), ?)";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setString(3, board.getId());
+			pstmt.executeUpdate();
+			return 1;
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "insertBoard", e);
+		}
+		return -1;
+	}
+
+	public int updateBoard(BoardDto board) {
+		String sql = "update board set title = ?, content = ? where num = ?";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setInt(3, board.getNum());
+			pstmt.executeUpdate();
+			return 1;
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "updateBoard", e);
+		}
+		return -1;
+	}
+
+	public int deleteBoard(int num) {
+		String sql = "delete from board where num = ?";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				PreparedStatement pstmt = conn.prepareStatement(sql)
+		) {
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+			return 1;
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "updateBoard", e);
+		}
+		return -1;
+	}
+
+	public BoardDto getBoard(int num) {
+		BoardDto board = new BoardDto();
+		String sql = "select * from board where num = ?";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				ResultSet rs = setResultSet(conn.prepareStatement(sql), num)) {
+			if (rs.next()) {
+				board = createBoard(rs);
+			}
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "getBoard", e);
+		}
+		return board;
+	}
+
+	public int readCount(int num) {
+		String sql = "update board set readcount = readcount + 1 where num = ?";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				PreparedStatement pstmt = setPreparedStatement(conn.prepareStatement(sql), num)
+		) {
+			pstmt.executeUpdate();
+			return 1;
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "readCount", e);
+		}
+		return -1;
+	}
+
+	public int isNextPage(int pageNum) {
+		String sql = "select * from board order by num desc limit ?, 3";
+		try (
+				Connection conn = DBManager.getConnection("mysql");
+				ResultSet rs = setResultSet(conn.prepareStatement(sql), pageNum)
+		) {
+			if (rs.next()) {
+				return 1;
+			}
+		} catch (SQLException e) {
+			MyUtil.showException(getClass().getName(), "isNextPage", e);
+		}
+		return -1;
+	}
+
 }

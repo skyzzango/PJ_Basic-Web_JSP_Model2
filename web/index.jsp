@@ -8,27 +8,29 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <html lang="ko">
 <head>
-	<title>$Title$</title>
+	<%@include file="/view/partials/head.jsp" %>
+	<title>Rong Page</title>
 </head>
 
 <body>
 
+<%--<%@include file="/view/partials/nav.jsp" %>--%>
 
 
 <div class="container">
 	
 	<div class="starter-template">
-		<h1>$END$</h1><br>
-		<a href="insert.do">삽입</a>
-		<a href="<%=request.getContextPath()%>/select.do">선택</a>
-		<a href="update.do">수정</a>
-		<a href="<%=request.getContextPath()%>/delete.do">삭제</a>
+		<h1>페이지 선택</h1>
+		<br>
+		<a class="btn btn-info" href="board" role="button">type03 페이지 이동</a>
+		<br>
 	</div>
 
 
 </div><!-- /.container -->
 
 
+<%@include file="/view/partials/script.jsp" %>
 
 </body>
 </html>

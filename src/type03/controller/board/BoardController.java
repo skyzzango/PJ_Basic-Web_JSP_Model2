@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/Board")
+@WebServlet("/board")
 public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String naming = "BoardController: ";
@@ -26,7 +26,7 @@ public class BoardController extends HttpServlet {
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
-		String cmd = null;
+		String cmd = "";
 		if (request.getParameter("cmd") != null) {
 			cmd = request.getParameter("cmd");
 		}

@@ -7,6 +7,14 @@
         <element id="directory" name="classes">
           <element id="module-output" name="PJ_Basic-Web_JSP_Model2" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.35" />
+          <element id="library" level="project" name="jstl-1.2" />
+          <element id="library" level="project" name="gson-2.8.0" />
+          <element id="library" level="project" name="javax.websocket-api-1.1" />
+          <element id="library" level="project" name="cos" />
+          <element id="library" level="project" name="json-simple-1.1.1" />
+        </element>
       </element>
     </root>
   </artifact>

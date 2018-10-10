@@ -4,38 +4,37 @@
 	<WatchedResource>WEB-INF/web.xml</WatchedResource>
 	<WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
 
-	<Resource name="jdbc/myOracle"
-	          auth="Container"
-	          type="javax.sql.DataSource"
-	          username="iu"
-	          password="iu1004"
-	          driverClassName="oracle.jdbc.OracleDriver"
-	          url="jdbc:oracle:thin:@localhost:1521:xe"
+	<!--<Resource name="jdbc/myOracle"-->
+	<!--auth="Container"-->
+	<!--type="javax.sql.DataSource"-->
+	<!--username="iu"-->
+	<!--password="iu1004"-->
+	<!--driverClassName="oracle.jdbc.OracleDriver"-->
+	<!--url="jdbc:oracle:thin:@localhost:1521:xe"-->
 
-	          maxTotal="100"
-	          maxIdle="30"
-	          maxWaitMillis="10000"
-	          maxActive="100"
-	          minIdle="10"
-	          maxWait="10000"
-	          initialSize="10"
-	          removeAbandonedTimeout="60"
-	          removeAbandoned="true"
-	/>
+	<!--maxTotal="100"-->
+	<!--maxIdle="30"-->
+	<!--maxWaitMillis="10000"-->
+	<!--maxActive="100"-->
+	<!--minIdle="10"-->
+	<!--maxWait="10000"-->
+	<!--initialSize="10"-->
+	<!--removeAbandonedTimeout="60"-->
+	<!--removeAbandoned="true"-->
+	<!--/>-->
 
 	<Resource name="jdbc/mySql"
 	          auth="Container"
 	          type="javax.sql.DataSource"
 	          username="iu"
 	          password="iu1004"
-	          driverClassName="com.mysql.jdbc.Driver"
-	          url="jdbc:mysql://localhost:3306/iu"
+	          driverClassName="com.mysql.cj.jdbc.Driver"
+	          url="jdbc:mysql://localhost:3306/iu?characterEncoding=UTF-8&amp;serverTimezone=UTC"
 
-	          maxTotal="100"
+	          validationQuery="select * from board"
+	          maxWait="10000"
 	          maxIdle="30"
-	          maxWaitMillis="10000"
-	          initialSize="10"
-	          removeAbandonedTimeout="60"
-	          removeAbandoned="true"
+	          maxActive="100"
 	/>
+
 </Context>

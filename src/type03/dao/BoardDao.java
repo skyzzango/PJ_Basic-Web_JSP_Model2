@@ -60,7 +60,7 @@ public class BoardDao {
 
 	public List<BoardDto> getPageBoard(int pageNum) {
 		List<BoardDto> list = new ArrayList<>();
-		String sql = "select * from board order by num desc limit ?, 3";
+		String sql = "select * from board order by num asc limit ?, 3";
 		try (
 				Connection conn = DBManager.getConnection("mysql");
 				ResultSet rs = setResultSet(conn.prepareStatement(sql), pageNum)

@@ -24,9 +24,10 @@
 			<!-- Blog Entries Column -->
 			<div class="col-md-12 my-order">
 				<div class="content-section">
-					<form name="w_form" action="<%=request.getContextPath()%>/board?cmd=board_write" method="post">
+					<form name="w_form" action="${pageContext.request.contextPath}/" method="post"
+					      enctype="multipart/form-data">
 						<!-- filepath : 이미지업로드 경로 -->
-						<input type="hidden" name="filepath" value="/editor/upload/"/>
+						<input type="hidden" name="filepath" value="/upload/"/>
 						<input type="hidden" name="id" value="${sessionScope.id}"/>
 
 						<fieldset class="form-group">
@@ -37,13 +38,13 @@
 								       autofocus>
 							</div>
 							<div class="form-group">
-								<label for="summernote" class="form-control-label">Content </label>
-								<textarea id="summernote" name="content"></textarea>
+								<label for="editor2" class="form-control-label">Content </label>
+								<textarea id="editor2" name="editor2" rows="10"></textarea>
 								<progress></progress>
 							</div>
 							<div class="form-group">
-								<button class="btn btn-outline-info" type="button" onclick="submitContents(this)">
-									Update
+								<button type="submit" class="btn btn-primary">
+									Submit
 								</button>
 							</div>
 						</fieldset>
@@ -58,66 +59,40 @@
 
 
 <%@include file="/view/partials/script.jsp" %>
+<script src="https://cdn.ckeditor.com/4.10.1/standard-all/ckeditor.js"></script>
+<script>
+	CKEDITOR.replace( 'editor2', {
+		extraPlugins: 'uploadimage,image2',
+		height: 300,
 
-<!-- include summernote css/js -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+		// Upload images to a CKFinder connector (note that the response type is set to JSON).
+		uploadUrl: 'https://sdk.ckeditor.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
 
-<!-- summernote Editor -->
-<script type="text/javascript">
-	// summernote를 사용하기 위한 선언
-	$('#summernote').summernote({
-		lang     : 'ko-KR',
-		height   : 300,
-		minHeight: null,
-		maxHeight: null,
-		focus    : true,
-		onImageUpload: function (files, editor, welEditable) {
-			for (var i = files.length - 1; i >= 0; i--) {
-				sendFile(files[i], this);
-			}
-		}
-	});
+		// Configure your file manager integration. This example uses CKFinder 3 for PHP.
+		filebrowserBrowseUrl: 'https://sdk.ckeditor.com/ckfinder/ckfinder.html',
+		filebrowserImageBrowseUrl: 'https://sdk.ckeditor.com/ckfinder/ckfinder.html?type=Images',
+		filebrowserUploadUrl: 'https://sdk.ckeditor.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		filebrowserImageUploadUrl: 'https://sdk.ckeditor.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
 
-	/* summernote에서 이미지 업로드시 실행할 함수 */
-	function sendFile(file, el) {
-		event.preventDefault();
-		var files = event.dataTransfer.files;
-		var file = files[0];
-		console.log(file);
-		var data = new FormData();
-		data.append("file", file);
-		$.ajax({
-			data: data,
-			type: 'POST',
-			dataType: 'text',
-			xhr: function() {
-				var myXhr = $.ajaxSettings.xhr();
-				if (myXhr.upload) myXhr.upload.addEventListener('progress',progressHandlingFunction, false);
-				return myXhr;
-			},
-			url: 'imageUpload.jsp',
-			cache: false,
-			contentType: false,
-			processData: false,
-			success: function(data) {
-				editor.insertImage(welEditable, url);
-				$(el).summernote('editor.insertImage',"/displayFile?fileName=" + data);
-			}
-		});
-	}
+		// The following options are not necessary and are used here for presentation purposes only.
+		// They configure the Styles drop-down list and widgets to use classes.
 
-	// update progress bar
-	function progressHandlingFunction(e) {
-		if (e.lengthComputable) {
-			$('progress').attr({value: e.loaded, max: e.total});
-			// reset progress on complete
-			if (e.loaded == e.total) {
-				$('progress').attr('value', '0.0');
-			}
-		}
-	}
+		stylesSet: [
+			{ name: 'Narrow image', type: 'widget', widget: 'image', attributes: { 'class': 'image-narrow' } },
+			{ name: 'Wide image', type: 'widget', widget: 'image', attributes: { 'class': 'image-wide' } }
+		],
+
+		// Load the default contents.css file plus customizations for this sample.
+		contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
+
+		// Configure the Enhanced Image plugin to use classes instead of styles and to disable the
+		// resizer (because image size is controlled by widget styles or the image takes maximum
+		// 100% of the editor width).
+		image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+		image2_disableResizer: true
+	} );
 </script>
+
 
 </body>
 </html>

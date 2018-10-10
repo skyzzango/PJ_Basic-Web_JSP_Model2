@@ -22,7 +22,7 @@ public class ActionFactory {
 			case "board_list":
 				return new BoardListAction();
 
-			case "/select.do":
+			case "board_write":
 				return new BoardWriteAction();
 
 //			case "member_join":

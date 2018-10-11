@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%
 	// 이미지 업로드할 경로
-	String uploadPath = request.getContextPath() + "/upload";
+	String uploadPath = request.getContextPath() + "/upload/";
 	System.out.println("uploadPath: " + uploadPath); // path 를 출력해서 확인(fileFolder 없으면 생성해주자!!!)
 	int size = 10 * 1024 * 1024;  // 업로드 사이즈 제한 10M 이하
 
@@ -29,7 +29,7 @@
 	}
 
 	// 업로드된 경로와 파일명을 통해 이미지의 경로를 생성
-	String uploadPath1 = "/upload/" + fileName;
+	String uploadPath1 = "/editor/upload/" + fileName;
 
 	// 생성된 경로를 JSON 형식으로 보내주기 위한 설정
 	JSONObject jobj = new JSONObject();

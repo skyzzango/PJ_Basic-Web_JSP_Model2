@@ -1,8 +1,6 @@
 package type03.action;
 
-import type03.controller.board.BoardListAction;
-import type03.controller.board.BoardViewAction;
-import type03.controller.board.BoardWriteAction;
+import type03.controller.board.*;
 
 public class ActionFactory {
 
@@ -45,12 +43,12 @@ public class ActionFactory {
 //
 //			case "board_delete":
 //				return new BoardDeleteAction();
-//
-//			case "board_update":
-//				return new BoardUpdateAction();
-//
-//			case "board_updateProc":
-//				return new BoardUpdateProcAction();
+
+			case "board_update":
+				return new BoardUpdateAction();
+
+			case "board_updateProc":
+				return new BoardUpdateProcAction();
 //
 //			case "board_ajax":
 //				return new BoardAjaxAction();

@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Map;
 
 public class BoardWriteAction implements Action {
@@ -29,57 +27,29 @@ public class BoardWriteAction implements Action {
 		int uploadFileSizeLimit = 5 * 1024 * 1024; // 파일 최대크기 5M으로 제한
 		String encType = "UTF-8"; // char 인코딩 방식
 
-		String uploadPath = request.getRealPath("upload");
-		System.out.println("uploadPath: " + uploadPath);
-		MultipartRequest multi = new MultipartRequest(
-				request,
-				uploadPath,
-				uploadFileSizeLimit,
-				encType,
-				new DefaultFileRenamePolicy()
-		);
-		Enumeration files = multi.getFileNames();
-		String file1 = (String) files.nextElement();
-		String fileName1 = multi.getFilesystemName(file1);
-		System.out.println("fileName1: " + fileName1);
-		String file2 = (String) files.nextElement();
-		String fileName2 = multi.getFilesystemName(file2);
-		System.out.println("fileName2: " + fileName2);
-
-		ServletContext context = request.getSession().getServletContext();
-		String uploadFilePath = context.getRealPath(savePath);
-		System.out.println("uploadFilePath: " + uploadFilePath);
-
-		multi = new MultipartRequest(
-				request, // request 객체
-				uploadFilePath, // 서버 상의 실제 데이터
-				uploadFileSizeLimit, // 최대 업로드 파일크기
-				encType, // 인코딩 타입
-				new DefaultFileRenamePolicy()
-		);
-		// UploadFile 이름은 input 태그의 name 과 동일한 이름을 사용한다.
-		String fileName = multi.getFilesystemName("uploadFile");
-		System.out.println("fileName1: " + fileName);
-
+		////////////////////////////////////////////////////////////////
+//		String uploadPath = request.getRealPath("/editor/upload/");
+//		System.out.println("uploadPath: " + uploadPath);
+//		MultipartRequest multi = new MultipartRequest(
+//				request,
+//				uploadPath,
+//				uploadFileSizeLimit,
+//				encType,
+//				new DefaultFileRenamePolicy()
+//		);
+//		Enumeration files = multi.getFileNames();
+//		String file = (String) files.nextElement();
+//		String fileName1 = multi.getFilesystemName(file);
+//		System.out.println("fileName1: " + fileName1);
+		////////////////////////////////////////////////////////////////
 
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		System.out.println("isMultipart: " + isMultipart);
-		System.out.println("ParameterMap");
+
 		Map<String, String[]> parameterMap = request.getParameterMap();
 		for (String key : parameterMap.keySet()) {
-			System.out.println(key + Arrays.toString(parameterMap.get(key)));
+			System.out.println(key + ": " + request.getParameter(key));
 		}
-		System.out.println("ParameterEnum");
-		Enumeration<String> parameterNames = request.getParameterNames();
-		while (parameterNames.hasMoreElements()) {
-			System.out.println(parameterNames.nextElement());
-		}
-		System.out.println("attributeNames");
-		Enumeration<String> attributeNames = request.getAttributeNames();
-		while (attributeNames.hasMoreElements()) {
-			System.out.println(attributeNames.nextElement());
-		}
-		System.out.println("CKEditorFuncNum:" + request.getParameter("CKEditorFuncNum"));
 
 		String id;
 		request.getSession().setAttribute("id", "admin@admin.com");
@@ -94,6 +64,22 @@ public class BoardWriteAction implements Action {
 				board.setId(id);
 				board.setTitle(request.getParameter("title"));
 				board.setContent(request.getParameter("content"));
+
+				////////////////////////////////////////////////////////////////
+				ServletContext context = request.getSession().getServletContext();
+				String uploadFilePath = context.getRealPath(savePath);
+				System.out.println("uploadFilePath: " + uploadFilePath);
+				MultipartRequest multi1 = new MultipartRequest(
+						request, // request 객체
+						uploadFilePath, // 서버 상의 실제 데이터
+						uploadFileSizeLimit, // 최대 업로드 파일크기
+						encType, // 인코딩 타입
+						new DefaultFileRenamePolicy()
+				);
+				// UploadFile 이름은 input 태그의 name 과 동일한 이름을 사용한다.
+				String fileName = multi1.getFilesystemName("file");
+				System.out.println("fileName1: " + fileName);
+				////////////////////////////////////////////////////////////////
 
 				BoardDao boardDao = new BoardDao();
 				int insert = boardDao.insertBoard(board);
